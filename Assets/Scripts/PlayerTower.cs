@@ -6,8 +6,8 @@ public class PlayerTower : MonoBehaviour
 {
     [SerializeField] private float INIT_MISSILE_SPEED = 3.0f;
     
-    [SerializeField] private Camera MainCamera;
-    [SerializeField] public Missile projectile;
+    [SerializeField] private Camera mainCamera;
+    [SerializeField] private PlayerMissile projectile;
     
     private Transform myTransform;
     
@@ -23,10 +23,10 @@ public class PlayerTower : MonoBehaviour
         if (Input.GetButtonDown("Fire1"))
         {
             Vector3 mousePosition = Input.mousePosition;
-            mousePosition = MainCamera.ScreenToWorldPoint(mousePosition);
+            mousePosition = mainCamera.ScreenToWorldPoint(mousePosition);
             mousePosition.z = 0;
             var myPosition = myTransform.position;
-            Missile clone = Instantiate(projectile, myPosition, myTransform.rotation);
+            PlayerMissile clone = Instantiate(projectile, myPosition, myTransform.rotation);
             clone.speed = Vector3.Normalize(mousePosition - myPosition) * INIT_MISSILE_SPEED;
         }
     }

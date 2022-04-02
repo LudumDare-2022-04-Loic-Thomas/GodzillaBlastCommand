@@ -126,3 +126,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0b624eee13abce49a5bc200603f419a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  INIT_MISSILE_SPEED: 3
+  mainCamera: {fileID: 0}
+  projectile: {fileID: 3091993908423883416, guid: 89e7cd4f560da654eaaa74510b5970f4, type: 3}

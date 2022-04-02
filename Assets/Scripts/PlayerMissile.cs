@@ -1,17 +1,22 @@
 using System;
 using UnityEngine;
 
-public class Missile : MonoBehaviour
+public class PlayerMissile : MonoBehaviour
 {
-    private const float WORLD_HALF_WIDTH = 12.0f;
-    private const float WORLD_HALF_HEIGHT = 7.0f;
+    [SerializeField] private float WORLD_HALF_WIDTH = 12.0f;
+    [SerializeField] private float WORLD_HALF_HEIGHT = 7.0f;
 
+    [SerializeField] private GameObject deathEffect;
+    
     [SerializeField] public Vector3 speed;
     [SerializeField] public Vector3 acceleration = Vector3.zero;
 
+    private string myName;
+    
     // Start is called before the first frame update
     void Start()
     {
+        myName = gameObject.name;
     }
 
     // Update is called once per frame
@@ -39,5 +44,23 @@ public class Missile : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+    
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log("collision between " + myName + " and " + collision.gameObject.name);
+        EnemyMissile enemyMissile = collision.gameObject.GetComponent<EnemyMissile>();
+        if (enemyMissile != null)
+        {
+            Debug.Log("The player missile collided with an enemy missile!");
+            enemyMissile.DestroySelf();
+            DestroySelf();
+        }
+    }
+    
+    private void DestroySelf()
+    {
+        Instantiate(deathEffect, transform.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 }

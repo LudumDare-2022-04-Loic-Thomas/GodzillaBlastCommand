@@ -5,10 +5,16 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
+    [SerializeField] private int NUM_FRAMES_BETWEEN_SPAWNS = 4;
+    [SerializeField] private float INIT_MISSILE_SPEED = 3.0f;
+    
+    [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private City[] cities;
 
-    public GameObject enemyPrefab;
-    public City[] cities;
-
+    private Vector3 min;
+    private Vector3 max;
+    private int numFramesSinceLastSpawn = 0;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -21,28 +27,23 @@ public class EnemySpawner : MonoBehaviour
     {
 
     }
-
-    int i = 0;
+    
     void FixedUpdate()
     {
-        if (i < 4) ++i;
-        else
+        ++numFramesSinceLastSpawn;
+        if (numFramesSinceLastSpawn >= NUM_FRAMES_BETWEEN_SPAWNS)
         {
             Spawn();
-            i = 0;
+            numFramesSinceLastSpawn = 0;
         }
     }
 
     private void Spawn()
     {
         int cityNumber = UnityEngine.Random.Range(0, cities.Length);
-        Vector2 aim = cities[cityNumber].gameObject.transform.position;
-        Vector2 spawn = new Vector2(UnityEngine.Random.Range(min.x, max.x), UnityEngine.Random.Range(min.y, max.y));
+        Vector3 spawn = new Vector3(UnityEngine.Random.Range(min.x, max.x), UnityEngine.Random.Range(min.y, max.y), 0);
+        Vector3 aim = cities[cityNumber] ? cities[cityNumber].gameObject.transform.position : spawn + Vector3.down;
         GameObject enemy = Instantiate(enemyPrefab, spawn, Quaternion.identity); //Quaternion.LookRotation(aim-spawn, Vector3.up));
-        Debug.Log(spawn);
-        enemy.GetComponent<Enemy>().direction = aim - spawn;
+        enemy.GetComponent<EnemyMissile>().direction = (aim - spawn).normalized * INIT_MISSILE_SPEED;
     }
-
-    Vector3 min;
-    Vector3 max;
 }
