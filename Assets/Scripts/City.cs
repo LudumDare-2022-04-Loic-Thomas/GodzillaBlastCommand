@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class City : MonoBehaviour
 {
-    [SerializeField] public int lives = 5;
+    [SerializeField] public int maxLifes = 5;
+    [SerializeField] public int currentLifes;
     [SerializeField] public GameObject deathEffect;
+
+    [SerializeField] private EnemySpawner enemySpawner;
 
     private string myName;
     
@@ -13,6 +16,7 @@ public class City : MonoBehaviour
     void Start()
     {
         myName = gameObject.name;
+        currentLifes = maxLifes;
     }
 
     // Update is called once per frame
@@ -29,9 +33,9 @@ public class City : MonoBehaviour
         {
             Debug.Log("The city collided with an enemy missile!");
             enemyMissile.DestroySelf();
-            lives -= enemyMissile.damage;
+            currentLifes -= enemyMissile.damage;
 
-            if(lives <= 0)
+            if(currentLifes <= 0)
             {
                 DestroySelf();
             }
@@ -40,8 +44,14 @@ public class City : MonoBehaviour
 
     private void DestroySelf()
     {
+        enemySpawner.CityDestroyed(this);
         Instantiate(deathEffect, transform.position, Quaternion.identity);
         Destroy(gameObject);
-        // Also remove city from potential cities to aim from spawner
     }
+
+    public void SetEnemySpawner(EnemySpawner _spawner)
+    {
+        enemySpawner = _spawner;
+    }
+
 }

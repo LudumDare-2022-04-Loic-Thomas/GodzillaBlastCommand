@@ -47,11 +47,13 @@ MonoBehaviour:
   NUM_FRAMES_BETWEEN_SPAWNS: 4
   INIT_MISSILE_SPEED: 3
   enemyPrefab: {fileID: 8115013293839141830, guid: 695bb1c353cff9a46b52f4d7c30cbd67, type: 3}
+  endMenu: {fileID: 395976256975507921, guid: 072390eb54cbecf46828dc789f1876d5, type: 3}
   cities:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  destroyedCityCounter: 0
 --- !u!61 &5891439567709110031
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -5,11 +5,18 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
+    [SerializeField] private int SCORE_PER_TICK = 1;
     [SerializeField] private int NUM_FRAMES_BETWEEN_SPAWNS = 4;
     [SerializeField] private float INIT_MISSILE_SPEED = 3.0f;
     
     [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private GameObject endMenu;
+    [SerializeField] private Crosshair crosshair;
     [SerializeField] private City[] cities;
+    [SerializeField] private int destroyedCityCounter = 0;
+    [SerializeField] private int aliveCityCounter = 0;
+
+    [SerializeField] public int score = 0;
 
     private Vector3 min;
     private Vector3 max;
@@ -20,6 +27,12 @@ public class EnemySpawner : MonoBehaviour
     {
         min = gameObject.GetComponent<BoxCollider2D>().bounds.min;
         max = gameObject.GetComponent<BoxCollider2D>().bounds.max;
+
+        foreach(City c in cities)
+        {
+            c.SetEnemySpawner(this);
+        }
+        aliveCityCounter = cities.Length;
     }
 
     // Update is called once per frame
@@ -36,6 +49,8 @@ public class EnemySpawner : MonoBehaviour
             Spawn();
             numFramesSinceLastSpawn = 0;
         }
+
+        score += SCORE_PER_TICK * aliveCityCounter;
     }
 
     private void Spawn()
@@ -45,5 +60,23 @@ public class EnemySpawner : MonoBehaviour
         Vector3 aim = cities[cityNumber] ? cities[cityNumber].gameObject.transform.position : spawn + Vector3.down;
         GameObject enemy = Instantiate(enemyPrefab, spawn, Quaternion.identity); //Quaternion.LookRotation(aim-spawn, Vector3.up));
         enemy.GetComponent<EnemyMissile>().direction = (aim - spawn).normalized * INIT_MISSILE_SPEED;
+    }
+
+
+    public void CityDestroyed(City city)
+    {
+        foreach(City c in cities)
+        {
+            if (c == city)
+            {
+                destroyedCityCounter += 1;
+                aliveCityCounter -= 1;
+            }    
+        }
+        if(destroyedCityCounter == cities.Length)
+        {
+            endMenu.transform.GetChild(0).gameObject.SetActive(true);
+            crosshair.SetVisible(false);
+        }
     }
 }

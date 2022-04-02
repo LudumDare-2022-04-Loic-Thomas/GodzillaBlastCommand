@@ -9,6 +9,7 @@ public class Crosshair : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Cursor.visible = false;
     }
 
     // Update is called once per frame
@@ -18,5 +19,12 @@ public class Crosshair : MonoBehaviour
         mousePosition = MainCamera.ScreenToWorldPoint(mousePosition);
         mousePosition.z = 0;
         transform.position = mousePosition;
+    }
+
+
+    public void SetVisible(bool _visible)
+    {
+        Cursor.visible = !_visible;
+        gameObject.GetComponent<SpriteRenderer>().enabled = _visible;
     }
 }
