@@ -62,7 +62,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55e4e9fac8a3aa943be4f8f951d428ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numFramesBetweenSpawns: 60
+  numFramesBetweenSpawns: 150
   objectToSpawn: {fileID: 8115013293839141830, guid: 55ea07eb0719a5445924982283c50112, type: 3}
   targets: []
 --- !u!114 &3390710144439727595
